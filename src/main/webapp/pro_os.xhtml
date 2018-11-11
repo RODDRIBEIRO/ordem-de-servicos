@@ -1,0 +1,190 @@
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+             template="template.xhtml">
+    <h:head>
+        <script>
+            PrimeFaces.locales['pt'] = {
+                closeText: 'Fechar',
+                prevText: 'Anterior',
+                nextText: 'Próximo',
+                currentText: 'Começo',
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 0,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Só Horas',
+                timeText: 'Tempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                ampm: false,
+                month: 'Mês',
+                week: 'Semana',
+                day: 'Dia',
+                allDayText: 'Todo o Dia'
+            };
+        </script>
+        <title>#{ordemDeServicosView.titulo}</title>
+    </h:head>
+    <h:form id="form">
+        <p:dataTable id="dtable" value="#{ordemDeServicosView.listaos}" var="p" rows="10"
+                     paginator="true"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15">
+
+            <p:column headerText="Id" filterBy="#{p.id}" filterMatchMode="contains" style="width: 50px">
+                <h:outputText value="#{p.id}"/>
+            </p:column> 
+
+            <p:column headerText="Cliente" filterBy="#{p.cliente.pessoa.nome}" filterMatchMode="contains">
+                <h:outputText value="#{p.cliente.pessoa.nome}" />
+            </p:column>
+
+            <p:column headerText="Técnico" filterBy="#{p.tecnico.usuario.pessoa.nome}" filterMatchMode="contains" >
+                <h:outputText value="#{p.tecnico.usuario.pessoa.nome}" />
+            </p:column>
+
+            <p:column headerText="Status" filterBy="#{p.status}" filterMatchMode="contains" style="width: 120px" >
+                <h:outputText value="#{p.status}" />
+            </p:column>
+
+
+            <p:column headerText="Opções" style="width: 100px">
+                <div align="center">
+                    <p:commandButton icon="ui-icon-pencil" action="#{ordemDeServicosView.editOs()}" update="form:pnlCad" oncomplete="PF('cadDialog').show()">
+                        <f:setPropertyActionListener 
+                            target="#{ordemDeServicosView.os}"
+                            value="#{p}" />
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-trash" oncomplete="PF('excluirDialog').show()">
+                        <f:setPropertyActionListener 
+                            target="#{ordemDeServicosView.os}"
+                            value="#{p}" />
+                    </p:commandButton>
+                </div>
+            </p:column>
+        </p:dataTable>
+
+        <p:commandButton value="Novo" icon="ui-icon-plus" 
+                         action="#{ordemDeServicosView.novaOs}" update="pnlCad" oncomplete="PF('cadDialog').show()"/>
+
+
+        <p:dialog header="Chamado Técnico" widgetVar="cadDialog" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:wizard flowListener="#{ordemDeServicosView.onFlowProcess}">
+                <p:tab id="principal" title="Principal">
+                    <h:panelGroup id="pnlCad">
+                        <h:panelGroup rendered="#{ordemDeServicosView.cad}">
+                            <h:panelGroup id="cadDetail" style="text-align:center;">
+                                <h:panelGrid  columns="2">
+
+                                    <h:outputText value="Data da abertura" />
+                                    <p:calendar id="abertura"
+                                                value="#{ordemDeServicosView.os.abertura}" 
+                                                mindate="#{ordemDeServicosView.dataAbertura}"
+                                                pattern="dd-MM-yyyy" mask="true" 
+                                                locale="pt">
+                                    </p:calendar> 
+
+                                    <h:outputText value="Tecnico" />
+                                    <p:autoComplete id="Tecnico" value="#{ordemDeServicosView.os.tecnico}" size="30" 
+                                                    completeMethod="#{ordemDeServicosView.oncompleteNomeTecnicos}" var="u" 
+                                                    itemLabel="#{u.usuario.pessoa.nome}" itemValue="#{u}">
+                                        <p:column headerText="Id">
+                                            <h:outputText value="#{u.id}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Tecnico">
+                                            <h:outputText value="#{u.usuario.pessoa.nome}"/>
+                                        </p:column>
+                                    </p:autoComplete>
+
+                                    <h:outputText value="Cliente" />
+                                    <p:autoComplete id="Cliente" value="#{ordemDeServicosView.os.cliente}" size="30" 
+                                                    completeMethod="#{ordemDeServicosView.oncompleteNomeClientes}" var="o" 
+                                                    itemLabel="#{o.pessoa.nome}" itemValue="#{o}">
+                                        <p:column headerText="Id">
+                                            <h:outputText value="#{o.id}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Cliente">
+                                            <h:outputText value="#{o.pessoa.nome}"/>
+                                        </p:column>
+                                    </p:autoComplete>
+
+                                    <h:outputText value="Status" />
+                                    <h:selectOneMenu value="#{ordemDeServicosView.os.status}">
+                                        <f:selectItem itemValue="Aberto"/>
+                                        <f:selectItem itemValue="Em atendimento"/>
+                                        <f:selectItem itemValue="Fechado"/>
+                                    </h:selectOneMenu>
+
+                                    <h:outputText value="Problema Relatado" />
+                                    <h:inputTextarea  style="width: 270px; height: 50px" value="#{ordemDeServicosView.os.problemaRelatado}" />
+
+                                    <h:outputText value="Diagnostico" />
+                                    <h:inputTextarea  style="width: 270px; height: 50px"  value="#{ordemDeServicosView.os.diagnostico}" />
+                                </h:panelGrid>
+
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </p:tab>
+
+                <p:tab id="endereco" title="endereco">
+
+                    <h:panelGrid columns="2">
+                        <h:panelGroup>
+                            <h:outputText value="Endereço"/>
+                            <h:inputText value="#{ordemDeServicosView.os.endereco}"/>
+                        </h:panelGroup>
+                        <h:panelGroup>
+                            <h:outputText value="Numero"/>
+                            <h:inputText style="width: 50px" value="#{ordemDeServicosView.os.numero}"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2">
+                        <h:panelGroup>
+                            <h:outputText value="Complemento"/>
+                            <h:inputText style="width: 270px" value="#{ordemDeServicosView.os.complemento}"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2">
+                        <h:panelGroup>
+                            <h:outputText value="Cidade"/>
+                            <h:inputText style="width: 190px" value="#{ordemDeServicosView.os.cidade}"/>
+                        </h:panelGroup>
+                        <h:panelGroup>
+                            <h:outputText value="UF"/>
+                            <h:inputText style="width: 70px" value="#{ordemDeServicosView.os.uf}"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </p:tab>>
+            </p:wizard>
+            <p:commandButton  value="Salvar" 
+                              action="#{ordemDeServicosView.salvar()}" update="dtable,cadDetail" oncomplete="PF('cadDialog').hide()">
+            </p:commandButton>
+        </p:dialog>
+        <p:confirmDialog id="exc" widgetVar="excluirDialog" message="Deseja realmente excluir esse registro?"
+                         showEffect="fade" hideEffect="fade"
+                         severity="alert">
+            <p:commandButton action="#{ordemDeServicosView.excluir()}" icon="ui-icon-check" 
+                             update="dtable" onclick="confirmation.hide()">
+            </p:commandButton>
+            <p:commandButton icon="ui-icon-cancel" onclick="confirmation.hide()" 
+                             update="dtable"/>
+        </p:confirmDialog>
+
+    </h:form>
+
+</ui:decorate>

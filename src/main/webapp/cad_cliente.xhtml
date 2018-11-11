@@ -1,0 +1,130 @@
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+             template="template.xhtml">
+    <h:head>
+        <title>#{clienteView.titulo}</title>
+    </h:head>
+    <h:form id="form">
+
+        <p:dataTable id="dtable" value="#{clienteView.clientes}" var="p" rows="10"
+                     paginator="true"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15">
+
+            <p:column headerText="Id" filterBy="#{p.id}" filterMatchMode="contains" style="width: 50px">
+                <h:outputText value="#{p.id}"/>
+            </p:column>
+
+            <p:column headerText="Nome/Razão Social" filterBy="#{p.pessoa.nome}" filterMatchMode="contains">
+                <h:outputText value="#{p.pessoa.nome}" />
+            </p:column>
+
+            <p:column headerText="Rg/Inscrição Estadual" filterBy="#{p.rgIncEst}" filterMatchMode="contains">
+                <h:outputText value="#{p.rgIncEst}" />
+            </p:column>
+
+            <p:column headerText="Cpf/Cnpj" filterBy="#{p.cpfCnpj}" filterMatchMode="contains">
+                <h:outputText value="#{p.cpfCnpj}" />
+            </p:column>
+
+            <p:column headerText="Observação" filterBy="#{p.observacao}" filterMatchMode="contains">
+                <h:outputText value="#{p.observacao}" />
+            </p:column>
+
+            <p:column headerText="Opções" style="width: 100px">
+                <div align="center">
+                    <p:commandButton icon="ui-icon-pencil" action="#{clienteView.editOs()}"  update="form:pnlCad" oncomplete="PF('cadDialog').show()">
+                        <f:setPropertyActionListener 
+                            target="#{clienteView.cliente}"
+                            value="#{p}" />
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-trash" update="form:pnlExc" oncomplete="PF('excluirDialog').show()">
+                        <f:setPropertyActionListener 
+                            target="#{clienteView.cliente}"
+                            value="#{p}" />
+                    </p:commandButton>
+                </div>
+            </p:column>
+
+        </p:dataTable>
+
+        <h:panelGroup>
+            <p:commandButton value="Novo" icon="ui-icon-plus" action="#{clienteView.novaOs()}" update="pnlCad" oncomplete="PF('cadDialog').show()"/>
+            <p:commandButton value="Relátorio" action="#{clienteView.relatorioImp()}" ajax="false" onclick="this.form.target = '_blank'"/>
+        </h:panelGroup>
+
+        <p:dialog header="Cadastro de Cliente" widgetVar="cadDialog" showEffect="fade" hideEffect="fade" resizable="false" style="align-content: flex-end">
+            <h:panelGroup id="pnlCad">
+                <h:panelGroup rendered="#{clienteView.cad}">
+                    <h:panelGroup id="cadCab">
+                        <p:panelGrid  columns="1">
+
+                            <h:panelGroup>
+                                <h:outputText value="Nome/Razão Social: " />
+                                <p:inputText value="#{clienteView.cliente.pessoa.nome}" style="width: 400px"/>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:outputText value="Apelido/Fantasia: " />
+                                <p:inputText value="#{clienteView.cliente.pessoa.apelidoFantasia}" style="width: 415px"/>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:outputText value="Cpf/Cnpj: " />
+                                <p:inputText value="#{clienteView.cliente.cpfCnpj}" />
+                                <h:outputText value="Rg/IncEst: " />
+                                <p:inputText value="#{clienteView.cliente.rgIncEst}" />
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:outputText value="Logradouro:" />
+                                <p:inputText value="#{clienteView.cliente.logradouro}"/>
+                                <h:outputText value="Cidade:" />
+                                <p:inputText value="#{clienteView.cliente.cidade}" />
+                                <h:outputText value="UF:" />
+                                <p:inputText value="#{clienteView.cliente.uf}" style="width: 30px" />
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+
+                                <h:outputText value="Complemento:" />
+                                <p:inputText value="#{clienteView.cliente.complemento}" style="width: 430px"/>
+                            </h:panelGroup>
+
+                            <p:commandButton  value="Salvar" 
+                                              action="#{clienteView.salvar()}" update="dtable,cadCab" oncomplete="PF('cadDialog').hide()">
+                            </p:commandButton>
+
+                        </p:panelGrid>
+                    </h:panelGroup>
+
+                </h:panelGroup>
+
+            </h:panelGroup>
+        </p:dialog>
+
+        <p:confirmDialog id="exc" widgetVar="excluirDialog" message="Deseja realmente excluir esse registro?"
+                         showEffect="fade" hideEffect="fade"
+                         severity="alert">
+            <h:panelGroup id="pnlExc">
+                <h:panelGroup>
+
+                    <p:commandButton action="#{clienteView.excluir()}" icon="ui-icon-check" 
+                                     update="@form" onclick="confirmation.hide()">
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-cancel"
+                                     update="@form" onclick="confirmation.hide()" />
+
+                </h:panelGroup>
+            </h:panelGroup>
+        </p:confirmDialog>
+
+    </h:form>
+
+
+
+</ui:decorate>
