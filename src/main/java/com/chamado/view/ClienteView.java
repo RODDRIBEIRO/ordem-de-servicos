@@ -6,6 +6,7 @@
 package com.chamado.view;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -21,99 +22,103 @@ import com.chamado.relatorio.Relatorio;
  */
 @ManagedBean
 @ViewScoped
-public class ClienteView extends View implements Serializable{
-
-    /**
-	 * 
-	 */
+public class ClienteView extends View implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Cliente cliente;
-    private List<Cliente> listaClientes;
-    private ClienteDao clienteDao;
-    private boolean cad;
+	private List<Cliente> listaClientes;
+	private ClienteDao clienteDao;
+	private boolean cad;
 
-    @Override
-    public void limpar() {
-    }
+	public ClienteView() {
+		this.cliente = new Cliente();
+		this.listaClientes = new ArrayList<>();
+		this.clienteDao = new ClienteDao();
+		this.cad = true;
+	}
 
-    @Override
-    public void salvar() {
-        clienteDao.salvar(cliente);
-        iniciar();
-    }
+	@Override
+	public void limpar() {
+	}
 
-    @Override
-    public void editar() {
-        clienteDao.editar(cliente);
-    }
+	@Override
+	public void salvar() {
+		clienteDao.salvar(cliente);
+		iniciar();
+	}
 
-    @Override
-    public void excluir() {
-        clienteDao.excluir(cliente);
-    }
+	@Override
+	public void editar() {
+		clienteDao.editar(cliente);
+	}
 
-    @Override
-    public void iniciar() {
-        cad = false;
-        cliente = new Cliente();
-    }
+	@Override
+	public void excluir() {
+		clienteDao.excluir(cliente);
+	}
 
-    @Override
-    public String getTitulo() {
-        cliente = new Cliente();
-        clienteDao = new ClienteDao();
-        return "ChamadoWeb";
-    }
-    
-   public void relatorioImp(){
-        Relatorio relatorio = new Relatorio();
-        relatorio.getRelatorio(listaClientes, "/rel/clientes.jasper");
-    }
+	@Override
+	public void iniciar() {
+		cad = false;
+		cliente = new Cliente();
+	}
 
-    public void novaOs() {
-        cliente = new Cliente();
-        cad = true;
-    }
+	@Override
+	public String getTitulo() {
+		/*
+		 * cliente = new Cliente(); clienteDao = new ClienteDao();
+		 */
+		return "ChamadoWeb";
+	}
 
-    public void editOs() {
-        cad = true;
-    }
+	public void relatorioImp() {
+		Relatorio relatorio = new Relatorio();
+		relatorio.getRelatorio(listaClientes, "/rel/clientes.jasper");
+	}
 
-    public List<Cliente> getClientes() {
-        listaClientes = clienteDao.lista();
-        return listaClientes;
-    }
+	public void novaOs() {
+		cliente = new Cliente();
+		cad = true;
+	}
 
-    public Cliente getCliente() {
-        return cliente;
-    }
+	public void editOs() {
+		cad = true;
+	}
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
+	public List<Cliente> getClientes() {
+		listaClientes = clienteDao.lista();
+		return listaClientes;
+	}
 
-    public List<Cliente> getListaClientes() {
-        return listaClientes;
-    }
+	public Cliente getCliente() {
+		return cliente;
+	}
 
-    public void setListaClientes(List<Cliente> listaClientes) {
-        this.listaClientes = listaClientes;
-    }
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 
-    public ClienteDao getClienteDao() {
-        return clienteDao;
-    }
+	public List<Cliente> getListaClientes() {
+		return listaClientes;
+	}
 
-    public void setClienteDao(ClienteDao clienteDao) {
-        this.clienteDao = clienteDao;
-    }
+	public void setListaClientes(List<Cliente> listaClientes) {
+		this.listaClientes = listaClientes;
+	}
 
-    public boolean isCad() {
-        return cad;
-    }
+	public ClienteDao getClienteDao() {
+		return clienteDao;
+	}
 
-    public void setCad(boolean cad) {
-        this.cad = cad;
-    }
+	public void setClienteDao(ClienteDao clienteDao) {
+		this.clienteDao = clienteDao;
+	}
+
+	public boolean isCad() {
+		return cad;
+	}
+
+	public void setCad(boolean cad) {
+		this.cad = cad;
+	}
 }

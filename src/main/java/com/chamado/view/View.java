@@ -13,6 +13,11 @@ import java.io.Serializable;
  */
 public abstract class View implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public abstract void limpar();
 
 	public abstract void salvar();

@@ -8,17 +8,19 @@ package com.chamado.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author Rodrigo
  */
 @Entity
-public class Cliente extends Pessoa implements Serializable {
+public class Cliente implements Serializable {
 
 	/**
 	 * 
@@ -35,6 +37,9 @@ public class Cliente extends Pessoa implements Serializable {
 	private String cidade;
 	private String uf;
 	private String complemento;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	private Pessoa pessoa;
 
 	@Override
 	public int hashCode() {

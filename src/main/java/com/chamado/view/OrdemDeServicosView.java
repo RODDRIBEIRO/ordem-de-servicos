@@ -24,7 +24,7 @@ import org.primefaces.event.FlowEvent;
  */
 @ManagedBean
 @ViewScoped
-public class OrdemDeServicosView extends View implements Serializable {
+public class OrdemDeServicosView extends View {
 
 	private OrdemDeServicos os;
 	private OrdemDeServicosDao osDao;
