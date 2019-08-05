@@ -5,14 +5,16 @@
  */
 package com.chamado.view;
 
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 import com.chamado.dao.TecnicoDao;
 import com.chamado.dao.UsuarioDao;
 import com.chamado.model.Tecnico;
 import com.chamado.model.Usuario;
-import java.io.Serializable;
-import java.util.List;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 
 /**
  *
@@ -20,105 +22,109 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class TecnicoView extends View implements Serializable{
+public class TecnicoView extends View implements Serializable {
 
-    private Tecnico tecnico;
-    private List<Tecnico> listatecnicos;
-    private TecnicoDao tecnicoDao;
-    private UsuarioDao usuarioDao;
-    private boolean cad;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private Tecnico tecnico;
+	private List<Tecnico> listatecnicos;
+	private TecnicoDao tecnicoDao;
+	private UsuarioDao usuarioDao;
+	private boolean cad;
 
-    @Override
-    public void limpar() {
-    }
+	@Override
+	public void limpar() {
+	}
 
-    @Override
-    public void salvar() {
-        tecnicoDao.salvar(tecnico);
-        iniciar();
-    }
+	@Override
+	public void salvar() {
+		tecnicoDao.salvar(tecnico);
+		iniciar();
+	}
 
-    @Override
-    public void editar() {
-        tecnicoDao.editar(tecnico);
-    }
+	@Override
+	public void editar() {
+		tecnicoDao.editar(tecnico);
+	}
 
-    @Override
-    public void excluir() {
-        tecnicoDao.excluir(tecnico);
-    }
+	@Override
+	public void excluir() {
+		tecnicoDao.excluir(tecnico);
+	}
 
-    @Override
-    public void iniciar() {
-        tecnico = new Tecnico();
-    }
+	@Override
+	public void iniciar() {
+		tecnico = new Tecnico();
+	}
 
-    public void novoTecnico() {
-        tecnico = new Tecnico();
-        cad = true;
-    }
-    
-    public void editarTecnico() {
-        cad = true;
-    }
-    
+	public void novoTecnico() {
+		tecnico = new Tecnico();
+		cad = true;
+	}
 
-    @Override
-    public String getTitulo() {
-        tecnico = new Tecnico();
-        tecnicoDao = new TecnicoDao();
-        cad = false;
-        return "ChamadoWeb";
-    }
+	public void editarTecnico() {
+		cad = true;
+	}
 
-    public List<Usuario> oncompleteNomeUsuarios(String nome) {
-        nome = nome.trim();
-        UsuarioDao usuarioDao1 = new UsuarioDao();
-        return usuarioDao1.findByName(nome);
-    }
+	@Override
+	public String getTitulo() {
+		tecnico = new Tecnico();
+		tecnicoDao = new TecnicoDao();
+		cad = false;
+		return "ChamadoWeb";
+	}
 
-    public List<Tecnico> getTecnicos() {
-        listatecnicos = tecnicoDao.lista();
-        return listatecnicos;
-    }
+	public List<Usuario> oncompleteNomeUsuarios(String nome) {
+		nome = nome.trim();
+		UsuarioDao usuarioDao1 = new UsuarioDao();
+		return usuarioDao1.findByName(nome);
+	}
 
-    public Tecnico getTecnico() {
-        return tecnico;
-    }
+	public List<Tecnico> getTecnicos() {
+		listatecnicos = tecnicoDao.lista();
+		return listatecnicos;
+	}
 
-    public void setTecnico(Tecnico tecnico) {
-        this.tecnico = tecnico;
-    }
+	public Tecnico getTecnico() {
+		return tecnico;
+	}
 
-    public List<Tecnico> getListatecnicos() {
-        return listatecnicos;
-    }
+	public void setTecnico(Tecnico tecnico) {
+		this.tecnico = tecnico;
+	}
 
-    public void setListatecnicos(List<Tecnico> listatecnicos) {
-        this.listatecnicos = listatecnicos;
-    }
+	public List<Tecnico> getListatecnicos() {
+		return listatecnicos;
+	}
 
-    public TecnicoDao getTecnicoDao() {
-        return tecnicoDao;
-    }
+	public void setListatecnicos(List<Tecnico> listatecnicos) {
+		this.listatecnicos = listatecnicos;
+	}
 
-    public void setTecnicoDao(TecnicoDao tecnicoDao) {
-        this.tecnicoDao = tecnicoDao;
-    }
+	public TecnicoDao getTecnicoDao() {
+		return tecnicoDao;
+	}
 
-    public UsuarioDao getUsuarioDao() {
-        return usuarioDao;
-    }
+	public void setTecnicoDao(TecnicoDao tecnicoDao) {
+		this.tecnicoDao = tecnicoDao;
+	}
 
-    public void setUsuarioDao(UsuarioDao usuarioDao) {
-        this.usuarioDao = usuarioDao;
-    }
+	public UsuarioDao getUsuarioDao() {
+		return usuarioDao;
+	}
 
-    public boolean isCad() {
-        return cad;
-    }
+	public void setUsuarioDao(UsuarioDao usuarioDao) {
+		this.usuarioDao = usuarioDao;
+	}
 
-    public void setCad(boolean cad) {
-        this.cad = cad;
-    }
+	public boolean isCad() {
+		return cad;
+	}
+
+	public void setCad(boolean cad) {
+		this.cad = cad;
+	}
 }

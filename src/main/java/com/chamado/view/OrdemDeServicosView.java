@@ -24,130 +24,130 @@ import org.primefaces.event.FlowEvent;
  */
 @ManagedBean
 @ViewScoped
-public class OrdemDeServicosView extends View implements Serializable{
+public class OrdemDeServicosView extends View implements Serializable {
 
-    private OrdemDeServicos os;
-    private OrdemDeServicosDao osDao;
-    private ClienteDao clienteDao;
-    private TecnicoDao tecnicoDao;
-    private boolean cad;
-    private boolean skip;
-    
-    public String onFlowProcess(FlowEvent event) {
-        if (skip) {
-            skip = false;   //reset in case user goes back
-            return "confirm";
-        } else {
-            return event.getNewStep();
-        }
-    }
+	private OrdemDeServicos os;
+	private OrdemDeServicosDao osDao;
+	private ClienteDao clienteDao;
+	private TecnicoDao tecnicoDao;
+	private boolean cad;
+	private boolean skip;
 
-    @Override
-    public void limpar() {
-    }
+	public String onFlowProcess(FlowEvent event) {
+		if (skip) {
+			skip = false; // reset in case user goes back
+			return "confirm";
+		} else {
+			return event.getNewStep();
+		}
+	}
 
-    @Override
-    public void salvar() {
-        osDao.salvar(os);
-        iniciar();
-    }
+	@Override
+	public void limpar() {
+	}
 
-    @Override
-    public void editar() {
-        osDao.editar(os);
-    }
+	@Override
+	public void salvar() {
+		osDao.salvar(os);
+		iniciar();
+	}
 
-    @Override
-    public void excluir() {
-        osDao.excluir(os);
-    }
+	@Override
+	public void editar() {
+		osDao.editar(os);
+	}
 
-    @Override
-    public void iniciar() {
-        cad = false;
-    }
+	@Override
+	public void excluir() {
+		osDao.excluir(os);
+	}
 
-    public void novaOs() {
-        os = new OrdemDeServicos();
-        cad = true;
-    }
+	@Override
+	public void iniciar() {
+		cad = false;
+	}
 
-    public void editOs() {
-        cad = true;
-    }
+	public void novaOs() {
+		os = new OrdemDeServicos();
+		cad = true;
+	}
 
-    @Override
-    public String getTitulo() {
-        os = new OrdemDeServicos();
-        osDao = new OrdemDeServicosDao();
-        tecnicoDao = new TecnicoDao();
-        clienteDao = new ClienteDao();
-        cad = false;
-        return "ChamadoWeb";
-    }
+	public void editOs() {
+		cad = true;
+	}
 
-    public List<Cliente> oncompleteNomeClientes(String nome) {
-        nome = nome.trim();
-        List list = clienteDao.findByName(nome);
-        return list;
-    }
+	@Override
+	public String getTitulo() {
+		os = new OrdemDeServicos();
+		osDao = new OrdemDeServicosDao();
+		tecnicoDao = new TecnicoDao();
+		clienteDao = new ClienteDao();
+		cad = false;
+		return "ChamadoWeb";
+	}
 
-    public List<Tecnico> oncompleteNomeTecnicos(String nome) {
-        nome = nome.trim();
-        tecnicoDao = new TecnicoDao();
-        List list = tecnicoDao.findByName(nome);
-        return list;
-    }
+	public List<Cliente> oncompleteNomeClientes(String nome) {
+		nome = nome.trim();
+		List list = clienteDao.findByName(nome);
+		return list;
+	}
 
-    public Date getDataAbertura() {
-        Date dataAtual = new Date();
-        os.setAbertura(dataAtual);
-        return dataAtual;
-    }
+	public List<Tecnico> oncompleteNomeTecnicos(String nome) {
+		nome = nome.trim();
+		tecnicoDao = new TecnicoDao();
+		List list = tecnicoDao.findByName(nome);
+		return list;
+	}
 
-    public OrdemDeServicos getOs() {
-        return os;
-    }
+	public Date getDataAbertura() {
+		Date dataAtual = new Date();
+		os.setAbertura(dataAtual);
+		return dataAtual;
+	}
 
-    public void setOs(OrdemDeServicos os) {
-        this.os = os;
-    }
+	public OrdemDeServicos getOs() {
+		return os;
+	}
 
-    public List<OrdemDeServicos> getListaos() {
-        List list = osDao.lista();
-        return list;
-    }
+	public void setOs(OrdemDeServicos os) {
+		this.os = os;
+	}
 
-    public OrdemDeServicosDao getOsDao() {
-        return osDao;
-    }
+	public List<OrdemDeServicos> getListaos() {
+		List list = osDao.lista();
+		return list;
+	}
 
-    public void setOsDao(OrdemDeServicosDao osDao) {
-        this.osDao = osDao;
-    }
+	public OrdemDeServicosDao getOsDao() {
+		return osDao;
+	}
 
-    public ClienteDao getClienteDao() {
-        return clienteDao;
-    }
+	public void setOsDao(OrdemDeServicosDao osDao) {
+		this.osDao = osDao;
+	}
 
-    public void setClienteDao(ClienteDao clienteDao) {
-        this.clienteDao = clienteDao;
-    }
+	public ClienteDao getClienteDao() {
+		return clienteDao;
+	}
 
-    public TecnicoDao getTecnicoDao() {
-        return tecnicoDao;
-    }
+	public void setClienteDao(ClienteDao clienteDao) {
+		this.clienteDao = clienteDao;
+	}
 
-    public void setTecnicoDao(TecnicoDao tecnicoDao) {
-        this.tecnicoDao = tecnicoDao;
-    }
+	public TecnicoDao getTecnicoDao() {
+		return tecnicoDao;
+	}
 
-    public boolean isCad() {
-        return cad;
-    }
+	public void setTecnicoDao(TecnicoDao tecnicoDao) {
+		this.tecnicoDao = tecnicoDao;
+	}
 
-    public void setCad(boolean cad) {
-        this.cad = cad;
-    }
+	public boolean isCad() {
+		return cad;
+	}
+
+	public void setCad(boolean cad) {
+		this.cad = cad;
+	}
 
 }

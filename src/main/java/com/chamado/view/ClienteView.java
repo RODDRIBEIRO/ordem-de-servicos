@@ -5,14 +5,15 @@
  */
 package com.chamado.view;
 
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 import com.chamado.dao.ClienteDao;
 import com.chamado.model.Cliente;
 import com.chamado.relatorio.Relatorio;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 
 /**
  *
@@ -22,7 +23,12 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class ClienteView extends View implements Serializable{
 
-    private Cliente cliente;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private Cliente cliente;
     private List<Cliente> listaClientes;
     private ClienteDao clienteDao;
     private boolean cad;

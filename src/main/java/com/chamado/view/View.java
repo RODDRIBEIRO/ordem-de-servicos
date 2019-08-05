@@ -11,17 +11,17 @@ import java.io.Serializable;
  *
  * @author Rodrigo
  */
-public abstract class View implements Serializable{
+public abstract class View implements Serializable {
 
-    public abstract void limpar();
+	public abstract void limpar();
 
-    public abstract void salvar();
+	public abstract void salvar();
 
-    public abstract void editar();
+	public abstract void editar();
 
-    public abstract void excluir();
+	public abstract void excluir();
 
-    public abstract void iniciar();
+	public abstract void iniciar();
 
-    public abstract String getTitulo();
+	public abstract String getTitulo();
 }
