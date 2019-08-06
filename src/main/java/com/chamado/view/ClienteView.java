@@ -14,6 +14,7 @@ import javax.faces.bean.ViewScoped;
 
 import com.chamado.dao.ClienteDao;
 import com.chamado.model.Cliente;
+import com.chamado.model.Pessoa;
 import com.chamado.relatorio.Relatorio;
 
 /**
@@ -25,12 +26,14 @@ import com.chamado.relatorio.Relatorio;
 public class ClienteView extends View implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private Pessoa pessoa;
 	private Cliente cliente;
 	private List<Cliente> listaClientes;
 	private ClienteDao clienteDao;
 	private boolean cad;
 
 	public ClienteView() {
+		this.pessoa = new Pessoa();
 		this.cliente = new Cliente();
 		this.listaClientes = new ArrayList<>();
 		this.clienteDao = new ClienteDao();
@@ -49,7 +52,7 @@ public class ClienteView extends View implements Serializable {
 
 	@Override
 	public void editar() {
-		clienteDao.editar(cliente);
+		clienteDao.salvar(cliente);
 	}
 
 	@Override
@@ -120,5 +123,13 @@ public class ClienteView extends View implements Serializable {
 
 	public void setCad(boolean cad) {
 		this.cad = cad;
+	}
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 }

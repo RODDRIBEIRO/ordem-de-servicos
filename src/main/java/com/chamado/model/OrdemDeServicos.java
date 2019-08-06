@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,12 +24,11 @@ import javax.persistence.TemporalType;
  * @author Rodrigo
  */
 @Entity
+@Table(name = "ordem_servicos")
 public class OrdemDeServicos implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -39,10 +39,6 @@ public class OrdemDeServicos implements Serializable {
 	private Date abertura;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechamento;
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Cliente> clientes;
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Tecnico> tecnicos;
 
 	public Integer getId() {
 		return id;
@@ -116,13 +112,4 @@ public class OrdemDeServicos implements Serializable {
 	public void setFechamento(Date fechamento) {
 		this.fechamento = fechamento;
 	}
-
-	public List<Cliente> getClientes() {
-		return clientes;
-	}
-
-	public void setClientes(List<Cliente> clientes) {
-		this.clientes = clientes;
-	}
-
 }

@@ -5,18 +5,19 @@
  */
 package com.chamado.view;
 
-import com.chamado.dao.ClienteDao;
-import com.chamado.dao.OrdemDeServicosDao;
-import com.chamado.dao.TecnicoDao;
-import com.chamado.model.Cliente;
-import com.chamado.model.OrdemDeServicos;
-import com.chamado.model.Tecnico;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.event.FlowEvent;
+
+import com.chamado.dao.ClienteDao;
+import com.chamado.dao.OrdemDeServicosDao;
+import com.chamado.model.Cliente;
+import com.chamado.model.OrdemDeServicos;
 
 /**
  *
@@ -24,14 +25,21 @@ import org.primefaces.event.FlowEvent;
  */
 @ManagedBean
 @ViewScoped
-public class OrdemDeServicosView extends View {
+public class OrdemDeServicosView extends View implements Serializable {
+
+	private static final long serialVersionUID = -2762166247924213014L;
 
 	private OrdemDeServicos os;
 	private OrdemDeServicosDao osDao;
 	private ClienteDao clienteDao;
-	private TecnicoDao tecnicoDao;
 	private boolean cad;
 	private boolean skip;
+
+	public OrdemDeServicosView() {
+		this.os = new OrdemDeServicos();
+		this.osDao = new OrdemDeServicosDao();
+		this.clienteDao = new ClienteDao();
+	}
 
 	public String onFlowProcess(FlowEvent event) {
 		if (skip) {
@@ -80,7 +88,6 @@ public class OrdemDeServicosView extends View {
 	public String getTitulo() {
 		os = new OrdemDeServicos();
 		osDao = new OrdemDeServicosDao();
-		tecnicoDao = new TecnicoDao();
 		clienteDao = new ClienteDao();
 		cad = false;
 		return "ChamadoWeb";
@@ -89,13 +96,6 @@ public class OrdemDeServicosView extends View {
 	public List<Cliente> oncompleteNomeClientes(String nome) {
 		nome = nome.trim();
 		List list = clienteDao.findByName(nome);
-		return list;
-	}
-
-	public List<Tecnico> oncompleteNomeTecnicos(String nome) {
-		nome = nome.trim();
-		tecnicoDao = new TecnicoDao();
-		List list = tecnicoDao.findByName(nome);
 		return list;
 	}
 
@@ -132,14 +132,6 @@ public class OrdemDeServicosView extends View {
 
 	public void setClienteDao(ClienteDao clienteDao) {
 		this.clienteDao = clienteDao;
-	}
-
-	public TecnicoDao getTecnicoDao() {
-		return tecnicoDao;
-	}
-
-	public void setTecnicoDao(TecnicoDao tecnicoDao) {
-		this.tecnicoDao = tecnicoDao;
 	}
 
 	public boolean isCad() {

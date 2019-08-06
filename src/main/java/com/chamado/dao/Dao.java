@@ -18,53 +18,55 @@ import javax.persistence.Persistence;
  */
 public abstract class Dao<T> implements Serializable {
 
-    static EntityManagerFactory emf;
+	private static final long serialVersionUID = 1912821899744168130L;
 
-    static {
-        emf = Persistence.createEntityManagerFactory("chamadocrudPU");
-    }
+	static EntityManagerFactory emf;
 
-    public void salvar(T t) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            t = em.merge(t);
-            em.persist(t);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        }finally{
-            em.close();
-        }
-    }
+	static {
+		emf = Persistence.createEntityManagerFactory("chamadocrudPU");
+	}
 
-    public void excluir(T t) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            t = em.merge(t);
-            em.remove(t);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        }finally{
-            em.close();
-        }
-    }
+	public void salvar(T t) {
+		EntityManager em = emf.createEntityManager();
+		try {
+			em.getTransaction().begin();
+			t = em.merge(t);
+			em.persist(t);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+	}
 
-    public void editar(T t) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.merge(t);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        }finally{
-            em.close();
-        }
-    }
+	public void excluir(T t) {
+		EntityManager em = emf.createEntityManager();
+		try {
+			em.getTransaction().begin();
+			t = em.merge(t);
+			em.remove(t);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+	}
 
-    public abstract List lista();
+	public void editar(T t) {
+		EntityManager em = emf.createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(t);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+	}
+
+	public abstract List lista();
 
 }

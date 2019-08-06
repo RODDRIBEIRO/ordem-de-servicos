@@ -13,33 +13,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author Rodrigo
  */
 @Entity
+@Table(name = "cliente")
 public class Cliente implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String cpfCnpj;
 	private String rgIncEst;
-	private String telefone;
-	private String observacao;
-	private String logradouro;
-	private String cidade;
-	private String uf;
-	private String complemento;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Pessoa pessoa;
+
+	public Cliente() {
+		this.pessoa = new Pessoa();
+	}
 
 	@Override
 	public int hashCode() {
@@ -79,14 +77,6 @@ public class Cliente implements Serializable {
 		this.cpfCnpj = cpfCnpj;
 	}
 
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -103,43 +93,11 @@ public class Cliente implements Serializable {
 		this.rgIncEst = rgIncEst;
 	}
 
-	public String getObservacao() {
-		return observacao;
+	public Pessoa getPessoa() {
+		return pessoa;
 	}
 
-	public void setObservacao(String observacao) {
-		this.observacao = observacao;
-	}
-
-	public String getLogradouro() {
-		return logradouro;
-	}
-
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-
-	public String getUf() {
-		return uf;
-	}
-
-	public void setUf(String uf) {
-		this.uf = uf;
-	}
-
-	public String getComplemento() {
-		return complemento;
-	}
-
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 }
